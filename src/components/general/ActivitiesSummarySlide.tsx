@@ -12,37 +12,6 @@ export const ActivitiesSummarySlide: React.FC<Props> = ({
 }) => {
   return (
     <BigStatSlide title={`${activitiesStats!.year} in numbers`}>
-      {/* Background decorative elements */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20%",
-          right: "-10%",
-          fontSize: "15rem",
-          opacity: 0.03,
-          transform: "rotate(-15deg)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      >
-        🏃
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          bottom: "10%",
-          left: "-5%",
-          fontSize: "12rem",
-          opacity: 0.03,
-          transform: "rotate(25deg)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      >
-        🚴
-      </div>
-
       {/* Activities with icons */}
       <div
         style={{

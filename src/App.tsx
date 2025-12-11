@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { parseGarminTotalDistanceCSV, parseGarminStepsCSV } from "./parser/csvParser";
+import {
+  parseGarminTotalDistanceCSV,
+  parseGarminStepsCSV,
+} from "./parser/csvParser";
 import { calculateAllActivitiesStats } from "./allActivitiesStats";
 import { calculateStepsStats } from "./stepsStats";
 import type { AllActivitiesStats, StepsStats } from "./types";
 import UploadScreen from "./components/UploadScreen";
 import LoadingScreen from "./components/LoadingScreen";
 import WrappedScreen from "./components/WrappedScreen";
+import Footer from "./components/shared/Footer";
 
 type Screen = "upload" | "loading" | "wrapped";
 
@@ -147,7 +151,15 @@ function App() {
     }
   };
 
-  return <div id="app">{renderScreen()}</div>;
+  return (
+    <div
+      id="app"
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
+      <div style={{ display: "flex" }}>{renderScreen()}</div>
+      <Footer />
+    </div>
+  );
 }
 
 export default App;

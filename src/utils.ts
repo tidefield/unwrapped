@@ -4,7 +4,7 @@ export const getActivityIcon = (type: string) => {
     cycling: "🚴",
     swimming: "🏊",
     walking: "🚶",
-    hiking: "🥾",
+    hiking: "🏔️",
     default: "🏃",
   };
   return icons[type.toLowerCase()] || icons.default;

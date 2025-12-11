@@ -1,87 +1,199 @@
-# Garmin Wrapped
+# Fitness (Un)Wrapped
 
-A privacy-focused, client-only Garmin activity wrapped experience.
+A privacy-focused, client-only fitness activity wrapped experience inspired by Spotify Wrapped. Upload your Garmin CSV data and visualize your fitness journey with beautiful slides.
 
-## Running the Demo
+![Demo](https://img.shields.io/badge/demo-available-brightgreen) ![Privacy](https://img.shields.io/badge/privacy-100%25%20client--side-blue)
 
-```bash
-npm install
-npm run dev
-```
+## ✨ Features
 
-Open http://localhost:5173/ in your browser.
+- 📊 **Activity Statistics**: View total distance, top activities, best months, and more
+- 🚶 **Steps Tracking**: Analyze your daily step patterns and achievements
+- 🎨 **Beautiful Slides**: Animated, shareable slides showcasing your fitness journey
+- 🔒 **100% Private**: All processing happens in your browser - no data leaves your device
+- 🎉 **Confetti Celebrations**: Fun animations to celebrate your achievements
+- ⌨️ **Keyboard Navigation**: Use arrow keys or click buttons to navigate
+- 📱 **Responsive Design**: Works on desktop and mobile devices
 
-## Current Status
+## 🚀 Getting Started
 
-The UI is fully functional with mock data. Navigate through slides using:
+### Prerequisites
 
-- Arrow buttons
-- Keyboard arrows (← →)
-- Progress dots
+- Node.js 16+
+- npm or yarn
 
-## Project Structure
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/fitness-unwrapped.git
+   cd fitness-unwrapped
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**
+   Navigate to http://localhost:5173/
+
+## 📁 Project Structure
 
 ```
 wrapped/
-├── index.html              # Main HTML file
-├── styles/main.css         # All styling and animations
+├── public/
+│   └── sample_data/         # Sample CSV files for testing
 ├── src/
-│   ├── main.ts            # App initialization and navigation
-│   ├── slides.ts          # Story slide definitions
-│   ├── mockData.ts        # Mock data generator (replace with real data)
-│   ├── types.ts           # TypeScript interfaces
-│   └── style.css          # Additional styles
+│   ├── components/          # React components
+│   │   ├── shared/         # Shared components (BigStatSlide, etc.)
+│   │   ├── general/        # General slide components
+│   │   └── steps/          # Steps-specific components
+│   ├── parser/             # CSV parsing utilities
+│   ├── *.ts                # Stats calculation modules
+│   ├── types.ts            # TypeScript type definitions
+│   ├── App.tsx             # Main application component
+│   └── main.tsx            # App entry point
+├── styles/
+│   └── main.css            # All styling and animations
 └── package.json
 ```
 
-## Customizing with Your Data
+## 📊 Using Your Own Data
 
-### Data Structure
+### Supported Data Formats
 
-The app expects a `WrappedStats` object (see `src/types.ts`):
+This app works with Garmin CSV exports:
+
+- **Total Distance.csv** - Your activity distances over time
+- **Steps.csv** - Your daily step counts
+
+### How to Upload
+
+1. **Export from Garmin Connect**
+   - Log into Garmin Connect
+   - Go to Settings → My Data → Export Data
+   - Download your CSV files
+
+2. **Upload to the App**
+   - Click "Upload your files" on the homepage
+   - Select your CSV files
+   - Wait for processing
+   - Enjoy your wrapped!
+
+### Sample Data
+
+Click "Use sample data" to see the app in action with mock data.
+
+## 🎨 Customization
+
+### Adding New Slide Types
+
+Create a new component in `src/components/` following the pattern:
 
 ```typescript
-interface WrappedStats {
-  year: number;
-  totalActivities: number;
-  totalDistance: number; // in meters
-  totalDuration: number; // in seconds
-  totalCalories: number;
-  totalElevationGain: number; // in meters
-  activeDays: number;
-  longestDistance: number; // in meters
-  longestDuration: number; // in seconds
-  avgHeartRate: number;
-  maxHeartRate: number;
-  favoriteActivity: string;
-  activitiesByMonth: { month: string; count: number }[];
-  topStats: { label: string; value: string }[];
-}
+export const MyCustomSlide: React.FC = ({ data }) => {
+  return (
+    <BigStatSlide
+      title="Your Title"
+      value={data.value}
+      label="units"
+      description="Optional description"
+    />
+  );
+};
 ```
 
-### How to Add Your Data
+### Styling
 
-1. **Replace mock data** in `src/mockData.ts` or `src/main.ts`
-2. **Add a data loader** - create a function that returns your `WrappedStats` object
-3. **Customize slides** in `src/slides.ts` to match your available data
+Key customization points in `styles/main.css`:
 
-## Styling
+- **Colors & Gradients**: Modify `:root` CSS variables
+- **Slide Transitions**: Update `.story-slide` animations
+- **Confetti**: Customize animation in `.confetti` keyframes
+- **Typography**: Update font families and sizes
 
-All styles are in `styles/main.css`. Key things you can customize:
+### Adding New Activity Types
 
-- **Colors**: Change the gradient in `body { background: ... }`
-- **Fonts**: Update the font-family
-- **Animations**: Adjust transitions and keyframes
-- **Layout**: Modify slide layouts in `.story-slide` classes
+Update `src/utils.ts` to add icons for new activity types:
 
-## Building for Production
+```typescript
+const icons: Record<string, string> = {
+  running: "🏃",
+  cycling: "🚴",
+  // Add your activity type here
+  yourActivity: "🏋️",
+};
+```
+
+## 🏗️ Building for Production
 
 ```bash
 npm run build
 ```
 
-Output will be in `dist/` directory. This is a static site - host it anywhere (GitHub Pages, Netlify, Vercel, etc).
+Deploy the `dist/` folder to any static hosting service:
 
-## Privacy
+- [Vercel](https://vercel.com)
+- [Netlify](https://netlify.com)
+- [GitHub Pages](https://pages.github.com)
+- [Firebase Hosting](https://firebase.google.com/products/hosting)
 
-This app is 100% client-side. No data is sent to any server. Everything runs in your browser.
+## 🔒 Privacy
+
+This application is **100% client-side**. Your data:
+
+- ✅ Never leaves your browser
+- ✅ Is not stored on any server
+- ✅ Is not tracked or analytics
+- ✅ Is not shared with third parties
+
+All processing happens locally in your browser using JavaScript.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. Areas where help is needed:
+
+- Adding support for more fitness tracker data formats (Fitbit, Apple Health, etc.)
+- Improving the UI/UX
+- Adding new slide types and visualizations
+- Internationalization (i18n)
+- Accessibility improvements
+
+### Development Guidelines
+
+- Use TypeScript for type safety
+- Follow the existing component structure
+- Keep styles in `styles/main.css`
+- Test with sample data before submitting PRs
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgments
+
+- Inspired by Spotify Wrapped
+- Built with React + TypeScript
+- Uses Vite for fast development and building
+
+## ⭐ Show Your Support
+
+If you found this project helpful, consider:
+
+- ⭐ Starring this repository
+- 🐛 Reporting bugs and issues
+- 💡 Suggesting new features
+- 🤝 Contributing to the codebase
+
+## 📧 Contact
+
+- Feedback: hi@tidefield.dev
+- GitHub Issues: [Create an issue](https://github.com/yourusername/fitness-unwrapped/issues)

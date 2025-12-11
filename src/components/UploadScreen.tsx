@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ConfettiBackground from "./shared/ConfettiBackground";
 
 interface UploadScreenProps {
   onFilesUploaded: (files: File[]) => void;
@@ -57,6 +58,7 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
 
   return (
     <div className="upload-container">
+      <ConfettiBackground />
       <h1>🎁 Fitness (un)Wrapped</h1>
       <p className="subtitle">Your year in fitness, free from paywalls</p>
 
@@ -179,25 +181,6 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
           />
         </svg>
         <span>Your data never leaves your device</span>
-      </div>
-
-      <div className="privacy-note" style={{ marginTop: "1rem" }}>
-        <span>
-          💙 Love this?{" "}
-          <a
-            href="https://buymeacoffee.com/tidefield"
-            target="_blank"
-            rel="noopener"
-            style={{
-              color: "#4d65ff",
-              textDecoration: "underline",
-              fontWeight: 600,
-            }}
-          >
-            Buy me a coffee
-          </a>{" "}
-          to keep the caffeine flowing! ☕
-        </span>
       </div>
     </div>
   );

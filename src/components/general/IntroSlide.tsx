@@ -21,6 +21,7 @@ export const IntroSlide: React.FC<Props> = ({ activitiesStats }) => {
         alignItems: "center",
         height: "100%",
         width: "100%",
+        paddingTop: "0",
       }}
     >
       <div className="slide-title">Your 2025</div>

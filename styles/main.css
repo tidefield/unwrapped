@@ -8,10 +8,47 @@ body {
     font-family:
         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
         Cantarell, sans-serif;
-    background: linear-gradient(135deg, #FFFFEB 0%, #FFF8E7 50%, #FFFFEB 100%);
-    color: #1A1A1A;
+    background: linear-gradient(135deg, #ffffeb 0%, #fff8e7 50%, #ffffeb 100%);
+    color: #1a1a1a;
     min-height: 100vh;
     overflow: hidden;
+}
+
+/* Celebration background elements */
+.celebration-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+    top: 0;
+    font-size: 2rem;
+    animation: confetti-fall 4s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.15;
+    }
+    90% {
+        opacity: 0.15;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 #app {
@@ -55,20 +92,22 @@ body {
     text-align: center;
     max-width: 600px;
     padding: 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .upload-container h1 {
     font-size: 3rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .subtitle {
     font-size: 1.2rem;
     opacity: 0.9;
     margin-bottom: 2rem;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .instructions {
@@ -83,7 +122,7 @@ body {
 
 .instructions p {
     margin-bottom: 0.5rem;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .instructions ol {
@@ -94,7 +133,7 @@ body {
 .instructions li {
     margin: 0.5rem 0;
     line-height: 1.5;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .instructions a {
@@ -116,7 +155,7 @@ body {
     font-size: 0.95rem;
     text-align: center;
     font-style: italic;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .drop-zone {
@@ -141,14 +180,14 @@ body {
     height: 64px;
     margin: 0 auto 1rem;
     opacity: 0.8;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .drop-text {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .drop-subtext {
@@ -177,7 +216,7 @@ body {
     padding: 0.5rem 0;
     border-bottom: 1px solid rgba(26, 26, 26, 0.1);
     font-size: 0.9rem;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .file-item:last-child {
@@ -190,7 +229,7 @@ body {
     font-size: 1.1rem;
     font-weight: 600;
     background: #4d65ff;
-    color: #FFFFEB;
+    color: #ffffeb;
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -261,7 +300,7 @@ body {
     border-radius: 20px;
     padding: 1.5rem;
     transition: all 0.3s ease;
-    background: linear-gradient(135deg, #FFFFEB 0%, #FFF8E7 100%);
+    background: linear-gradient(135deg, #ffffeb 0%, #fff8e7 100%);
 }
 
 .capture-area::before {
@@ -292,7 +331,7 @@ body {
     width: 100%;
     animation: fadeInUp 0.6s ease;
     position: relative;
-    padding-top: 4rem;
+    padding-top: 2.5rem;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -318,7 +357,7 @@ body {
     font-size: 2rem;
     margin-bottom: 1rem;
     font-weight: 700;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .story-slide .slide-header {
@@ -328,7 +367,7 @@ body {
     margin-top: 0.5rem;
     opacity: 0.9;
     letter-spacing: 0.5px;
-    color: #1A1A1A;
+    color: #1a1a1a;
     position: absolute;
     top: 0.75rem;
     left: 0;
@@ -341,21 +380,21 @@ body {
     font-weight: 800;
     margin: 1.5rem 0;
     line-height: 1;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .story-slide .stat-label {
     font-size: 1.2rem;
     opacity: 0.9;
     font-weight: 500;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .story-slide p {
     font-size: 1rem;
     opacity: 0.9;
     margin-top: 0.75rem;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 /* Share Controls */
@@ -377,7 +416,7 @@ body {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(26, 26, 26, 0.3);
-    color: #1A1A1A;
+    color: #1a1a1a;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -420,7 +459,7 @@ body {
     background: transparent;
     border: 2px solid transparent;
     border-radius: 8px;
-    color: #1A1A1A;
+    color: #1a1a1a;
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 0.7rem;
@@ -432,7 +471,7 @@ body {
     height: 20px;
     opacity: 0.7;
     transition: opacity 0.3s ease;
-    color: #1A1A1A;
+    color: #1a1a1a;
 }
 
 .ratio-btn:hover {
@@ -455,10 +494,6 @@ body {
 
 /* Navigation */
 .navigation {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: 2rem;
@@ -471,7 +506,7 @@ body {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(26, 26, 26, 0.3);
-    color: #1A1A1A;
+    color: #1a1a1a;
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s ease;

@@ -10,6 +10,7 @@ import { StepsTotalSlide } from "./steps/StepsTotalSlide";
 import { StepsAverageSlide } from "./steps/StepsAverageSlide";
 import { BestWeekSlide } from "./steps/BestWeekSlide";
 import { StepsBestMonthSlide } from "./steps/StepsBestMonthSlide";
+import ConfettiBackground from "./shared/ConfettiBackground";
 // import { StepsTimelineSlide } from "./steps/StepsTimelineSlide";
 
 interface WrappedScreenProps {
@@ -85,7 +86,6 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
     StepsTotalSlide,
     StepsAverageSlide,
     BestWeekSlide,
-    // StepsTimelineSlide,
     StepsBestMonthSlide,
   ];
 
@@ -150,9 +150,6 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
     if (CurrentSlideComponent === StepsBestMonthSlide && stepsStats) {
       return <StepsBestMonthSlide stepsStats={stepsStats} />;
     }
-    // if (CurrentSlideComponent === StepsTimelineSlide && stepsStats) {
-    //   return <StepsTimelineSlide stepsStats={stepsStats} />;
-    // }
 
     return <CurrentSlideComponent />;
   };
@@ -182,10 +179,21 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
   }
 
   return (
-    <div id="capture-area" className="capture-area">
-      <div id="story-container">{renderCurrentSlide()}</div>
+    <div>
+      <div id="capture-area" className="capture-area">
+        <ConfettiBackground />
+        <div id="story-container">{renderCurrentSlide()}</div>
+      </div>
 
-      <div className="navigation">
+      <div
+        className="navigation"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "20px",
+        }}
+      >
         <button
           className="nav-btn"
           onClick={prevSlide}
