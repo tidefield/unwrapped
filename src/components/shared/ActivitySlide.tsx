@@ -1,6 +1,8 @@
 import React from "react";
 import type { AllActivitiesStats } from "../../types";
 import { BigStatSlide } from "./BigStatSlide";
+import { useUnit } from "../../contexts/UnitContext";
+import { formatDistance, getDistanceLabel } from "../../utils";
 
 interface Props {
   activity: NonNullable<AllActivitiesStats>["activitiesByType"][0];
@@ -24,15 +26,17 @@ const getActivityTitle = (activityType: string): string => {
 };
 
 export const ActivitySlide: React.FC<Props> = ({ activity }) => {
+  const { unit } = useUnit();
   const bestMonth = activity.bestMonth.month;
   const title = getActivityTitle(activity.type);
+  const distanceLabel = getDistanceLabel(unit);
 
   return (
     <BigStatSlide
       title={title}
-      value={activity.totalDistance.toFixed(1)}
-      label={`kilometers in ${activity.totalMonths} months`}
-      description={`Best month: ${bestMonth} (${activity.bestMonth.distance.toFixed(1)} km)`}
+      value={formatDistance(activity.totalDistance, unit)}
+      label={`${distanceLabel} in ${activity.totalMonths} months`}
+      description={`Best month: ${bestMonth} (${formatDistance(activity.bestMonth.distance, unit)} ${distanceLabel})`}
     />
   );
 };

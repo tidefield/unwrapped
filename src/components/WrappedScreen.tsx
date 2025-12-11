@@ -11,6 +11,7 @@ import { StepsAverageSlide } from "./steps/StepsAverageSlide";
 import { BestWeekSlide } from "./steps/BestWeekSlide";
 import { StepsBestMonthSlide } from "./steps/StepsBestMonthSlide";
 import ConfettiBackground from "./shared/ConfettiBackground";
+import { useUnit } from "../contexts/UnitContext";
 // import { StepsTimelineSlide } from "./steps/StepsTimelineSlide";
 
 interface WrappedScreenProps {
@@ -23,6 +24,7 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
   stepsStats,
 }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const { unit } = useUnit();
 
   // Calculate total number of slides
   const totalSlides = React.useMemo(() => {
@@ -192,8 +194,21 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
           justifyContent: "center",
           alignItems: "center",
           padding: "20px",
+          position: "relative",
         }}
       >
+        <div
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            fontSize: "0.9rem",
+            color: "rgba(255, 255, 255, 0.6)",
+            fontWeight: 500,
+          }}
+        >
+          Showing distances in {unit === "mile" ? "miles" : "kilometers"}
+        </div>
         <button
           className="nav-btn"
           onClick={prevSlide}

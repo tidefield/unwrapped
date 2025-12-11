@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ConfettiBackground from "./shared/ConfettiBackground";
+import { Unit } from "../contexts/UnitContext";
 
 interface UploadScreenProps {
-  onFilesUploaded: (files: File[]) => void;
+  onFilesUploaded: (files: File[], unit: Unit) => void;
   sampleFiles?: File[];
   onUseSampleData?: () => void;
 }
@@ -13,6 +14,7 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
   onUseSampleData,
 }) => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>(sampleFiles);
+  const [selectedUnit, setSelectedUnit] = useState<Unit>("km");
 
   useEffect(() => {
     setUploadedFiles(sampleFiles);
@@ -51,7 +53,8 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
         onUseSampleData();
       } else {
         // Use uploaded files
-        onFilesUploaded(uploadedFiles);
+
+        onFilesUploaded(uploadedFiles, selectedUnit);
       }
     }
   };
@@ -89,6 +92,51 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
           </li>
           <li>Upload CSV files below (one or both files)</li>
         </ol>
+
+        {/*<div style={{ marginTop: "1.5rem", marginBottom: "1rem" }}>
+          <p style={{ marginBottom: "0.5rem" }}>
+            <strong>Distance unit in your CSV files:</strong>
+          </p>
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            <button
+              onClick={() => setSelectedUnit("km")}
+              style={{
+                padding: "8px 20px",
+                borderRadius: "8px",
+                border:
+                  selectedUnit === "km"
+                    ? "2px solid #4d65ff"
+                    : "2px solid rgba(0, 0, 0, 0.3)",
+                background: selectedUnit === "km" ? "#4d65ff" : "white",
+                color: selectedUnit === "km" ? "white" : "black",
+                cursor: "pointer",
+                fontWeight: 600,
+                fontSize: "16px",
+              }}
+            >
+              Kilometers (km)
+            </button>
+            <button
+              onClick={() => setSelectedUnit("mile")}
+              style={{
+                padding: "8px 20px",
+                borderRadius: "8px",
+                border:
+                  selectedUnit === "mile"
+                    ? "2px solid #4d65ff"
+                    : "2px solid rgba(0, 0, 0, 0.3)",
+                background: selectedUnit === "mile" ? "#4d65ff" : "white",
+                color: selectedUnit === "mile" ? "white" : "black",
+                cursor: "pointer",
+                fontWeight: 600,
+                fontSize: "16px",
+              }}
+            >
+              Miles (mi)
+            </button>
+          </div>
+        </div>*/}
+
         <p className="note">
           💡 <strong>Coming soon:</strong> Bulk export from Strava & StrideSync,
           plus heart rate, sleep data, and sport-personalized cards!

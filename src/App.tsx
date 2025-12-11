@@ -10,10 +10,12 @@ import UploadScreen from "./components/UploadScreen";
 import LoadingScreen from "./components/LoadingScreen";
 import WrappedScreen from "./components/WrappedScreen";
 import Footer from "./components/shared/Footer";
+import { UnitProvider, useUnit } from "./contexts/UnitContext";
 
 type Screen = "upload" | "loading" | "wrapped";
 
-function App() {
+function AppContent() {
+  const { setUnit } = useUnit();
   const [currentScreen, setCurrentScreen] = useState<Screen>("upload");
   const [activitiesStats, setActivitiesStats] =
     useState<AllActivitiesStats | null>(null);
@@ -57,6 +59,9 @@ function App() {
     setCurrentScreen("loading");
     setLoadingText("Loading sample data...");
 
+    // Set the unit to km for sample data
+    setUnit("km");
+
     try {
       // Load sample activity data
       const activityResponse = await fetch("/sample_data/Total Distance.csv");
@@ -88,8 +93,11 @@ function App() {
     }
   };
 
-  const handleFilesUploaded = async (files: File[]) => {
+  const handleFilesUploaded = async (files: File[], unit: "km" | "mile") => {
     setCurrentScreen("loading");
+
+    // Set the unit in context
+    setUnit(unit);
 
     try {
       const allActivityData = [];
@@ -99,10 +107,10 @@ function App() {
         setLoadingText(`Parsing ${file.name}...`);
 
         if (file.name.toLowerCase().includes("steps")) {
-          const data = await parseGarminStepsCSV(file);
+          const data = await parseGarminStepsCSV(file, unit);
           allStepsData.push(...data);
         } else {
-          const data = await parseGarminTotalDistanceCSV(file);
+          const data = await parseGarminTotalDistanceCSV(file, unit);
           allActivityData.push(...data);
         }
       }
@@ -159,6 +167,14 @@ function App() {
       <div style={{ display: "flex" }}>{renderScreen()}</div>
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <UnitProvider>
+      <AppContent />
+    </UnitProvider>
   );
 }
 

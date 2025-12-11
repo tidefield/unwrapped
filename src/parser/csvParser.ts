@@ -1,4 +1,5 @@
 import type { MonthlyActivityData, WeeklyStepsData } from "../types";
+import { milesToKm } from "../utils";
 
 /**
  * Parse Garmin steps CSV file
@@ -6,6 +7,7 @@ import type { MonthlyActivityData, WeeklyStepsData } from "../types";
  */
 export async function parseGarminStepsCSV(
   file: File,
+  distanceUnit: "km" | "mile" = "km",
 ): Promise<WeeklyStepsData[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -73,6 +75,7 @@ function parseStepsLine(values: string[]): WeeklyStepsData | null {
  */
 export async function parseGarminTotalDistanceCSV(
   file: File,
+  distanceUnit: "km" | "mile" = "km",
 ): Promise<MonthlyActivityData[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -80,7 +83,7 @@ export async function parseGarminTotalDistanceCSV(
     reader.onload = (e) => {
       try {
         const text = e.target?.result as string;
-        const data = parseActivityCSV(text);
+        const data = parseActivityCSV(text, distanceUnit);
         resolve(data);
       } catch (error) {
         reject(error);
@@ -95,14 +98,17 @@ export async function parseGarminTotalDistanceCSV(
 /**
  * Parse activity CSV text into structured data
  */
-function parseActivityCSV(text: string): MonthlyActivityData[] {
+function parseActivityCSV(
+  text: string,
+  distanceUnit: "km" | "mile",
+): MonthlyActivityData[] {
   const lines = text.split("\n").filter((line) => line.trim());
   const data: MonthlyActivityData[] = [];
 
   // Skip first two lines (title row and header row)
   for (let i = 2; i < lines.length; i++) {
     const values = parseCSVLine(lines[i]);
-    const activityData = parseActivityLine(values);
+    const activityData = parseActivityLine(values, distanceUnit);
 
     if (activityData) {
       data.push(activityData);
@@ -115,18 +121,26 @@ function parseActivityCSV(text: string): MonthlyActivityData[] {
 /**
  * Parse a single line from activity CSV
  */
-function parseActivityLine(values: string[]): MonthlyActivityData | null {
+function parseActivityLine(
+  values: string[],
+  distanceUnit: "km" | "mile",
+): MonthlyActivityData | null {
   if (values.length < 3) {
     return null;
   }
 
   const month = values[0]?.trim();
   const activityType = values[1]?.trim();
-  const distance = parseFloat(values[2]?.trim());
+  let distance = parseFloat(values[2]?.trim());
 
   // Validate data
   if (!month || !activityType || isNaN(distance)) {
     return null;
+  }
+
+  // Convert miles to km if needed
+  if (distanceUnit === "mile") {
+    distance = milesToKm(distance);
   }
 
   return {

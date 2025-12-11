@@ -1,12 +1,16 @@
 import React from "react";
 import type { AllActivitiesStats } from "../../types";
 import { BigStatSlide } from "../shared/BigStatSlide";
+import { useUnit } from "../../contexts/UnitContext";
+import { formatDistance, getDistanceLabel } from "../../utils";
 
 interface Props {
   activitiesStats: NonNullable<AllActivitiesStats>;
 }
 
 export const TopActivitySlide: React.FC<Props> = ({ activitiesStats }) => {
+  const { unit, convertDistance } = useUnit();
+  const distanceLabel = getDistanceLabel(unit);
   const topActivity = activitiesStats.activitiesByType[0];
 
   // Calculate marathons and half marathons for running
@@ -14,28 +18,32 @@ export const TopActivitySlide: React.FC<Props> = ({ activitiesStats }) => {
     const marathonDistance = 42.195;
     const halfMarathonDistance = 21.0975;
 
-    const marathons = distance / marathonDistance;
-    const halfMarathons = distance / halfMarathonDistance;
+    const marathonInUnit = convertDistance(marathonDistance);
+    const halfMarathonInUnit = convertDistance(halfMarathonDistance);
+
+    const marathons = distance / marathonInUnit;
+    const halfMarathons = distance / halfMarathonInUnit;
 
     if (marathons >= 1) {
       return `That's ${marathons.toFixed(1)} marathons! 🏃‍♂️`;
     } else if (halfMarathons >= 1) {
       return `That's ${halfMarathons.toFixed(1)} half-marathons! 🏃‍♀️`;
     } else {
-      return `Keep racking up those kilometers! 💪`;
+      return `Keep racking up those ${unit}! 💪`;
     }
   };
 
   // Calculate Everest climbs for walking
   const getWalkingDescription = (distance: number) => {
     const everestHeight = 8.848; // km (height of Mount Everest)
+    const everestInUnit = convertDistance(everestHeight);
 
-    const everests = distance / everestHeight;
+    const everests = distance / everestInUnit;
 
     if (everests >= 1) {
       return `That's ${everests.toFixed(1)} Mount Everests climbed! 🏔️`;
     } else {
-      const percentageOfEverest = (distance / everestHeight * 100).toFixed(1);
+      const percentageOfEverest = ((distance / everestInUnit) * 100).toFixed(1);
       return `That's ${percentageOfEverest}% of an Everest climb! 🧗`;
     }
   };
@@ -59,7 +67,7 @@ export const TopActivitySlide: React.FC<Props> = ({ activitiesStats }) => {
       title="Your top activity"
       value={topActivity.type}
       valueStyle={{ fontSize: "4rem" }}
-      label={`${topActivity.totalDistance.toFixed(1)} km`}
+      label={`${formatDistance(topActivity.totalDistance, unit)} ${distanceLabel}`}
       description={description}
     />
   );

@@ -1,45 +1,65 @@
 import React from "react";
 import type { AllActivitiesStats } from "../../types";
 import { BigStatSlide } from "./BigStatSlide";
+import { useUnit } from "../../contexts/UnitContext";
+import { formatDistance, getDistanceLabel, kmToMiles } from "../../utils";
 
 interface Props {
   activitiesStats: NonNullable<AllActivitiesStats>;
 }
 
 export const TotalDistanceSlide: React.FC<Props> = ({ activitiesStats }) => {
-  const totalKm = activitiesStats.totalDistance.toFixed(1);
-  const totalDistance = activitiesStats.totalDistance;
+  const { unit, convertDistance } = useUnit();
+  const totalKm = activitiesStats.totalDistance;
+  const totalDistance = convertDistance(totalKm);
+  const distanceLabel = getDistanceLabel(unit);
 
-  const getFunDescription = (distance: number): string => {
-    const earthToMoon = 384400;
-    const earthCircumference = 40075;
-    const marathons = (distance / 42.195).toFixed(1);
+  const getFunDescription = (distanceInUnit: number): string => {
+    const earthToMoonKm = 384400;
+    const earthCircumferenceKm = 40075;
+    const marathonKm = 42.195;
+    const greatWallKm = 21000;
+    const parisToNyKm = 5500;
+    const londonToDubaiKm = 4000;
+    const tourDeFranceKm = 3500;
+    const italyKm = 1200;
 
-    if (distance > earthToMoon) {
+    const earthToMoon = convertDistance(earthToMoonKm);
+    const earthCircumference = convertDistance(earthCircumferenceKm);
+    const greatWall = convertDistance(greatWallKm);
+    const parisToNy = convertDistance(parisToNyKm);
+    const londonToDubai = convertDistance(londonToDubaiKm);
+    const tourDeFrance = convertDistance(tourDeFranceKm);
+    const italy = convertDistance(italyKm);
+    const marathon = convertDistance(marathonKm);
+
+    const marathons = (distanceInUnit / marathon).toFixed(1);
+
+    if (distanceInUnit > earthToMoon) {
       return `You could have reached the moon and back! 🌙`;
     }
-    if (distance > 21000) {
+    if (distanceInUnit > greatWall) {
       return `That's longer than the Great Wall of China! 🏯`;
     }
-    if (distance > earthCircumference) {
+    if (distanceInUnit > earthCircumference) {
       return `You've gone all the way around the Earth! 🌍`;
     }
-    if (distance > 20000) {
+    if (distanceInUnit > 20000) {
       return `Halfway around the world and beyond! 🌏`;
     }
-    if (distance > 5500) {
+    if (distanceInUnit > parisToNy) {
       return `Like going from Paris to New York! 🗽`;
     }
-    if (distance > 4000) {
+    if (distanceInUnit > londonToDubai) {
       return `Like going from London to Dubai! 🏙️`;
     }
-    if (distance > 3500) {
-      return `Like completing the Tour de France ${(distance / 3500).toFixed(1)} times! 🚴`;
+    if (distanceInUnit > tourDeFrance) {
+      return `Like completing the Tour de France ${(distanceInUnit / tourDeFrance).toFixed(1)} times! 🚴`;
     }
-    if (distance > 1200) {
+    if (distanceInUnit > italy) {
       return `You walked the entire length of Italy! 🇮🇹`;
     }
-    if (distance > 42.195) {
+    if (distanceInUnit > marathon) {
       return `That's ${marathons} marathons worth of effort! 🏃`;
     }
     return `Every step counts - keep crushing it! 💪`;
@@ -50,8 +70,8 @@ export const TotalDistanceSlide: React.FC<Props> = ({ activitiesStats }) => {
   return (
     <BigStatSlide
       title="In total, you moved"
-      value={totalKm}
-      label="kilometers"
+      value={formatDistance(totalKm, unit)}
+      label={distanceLabel}
       description={description}
     />
   );

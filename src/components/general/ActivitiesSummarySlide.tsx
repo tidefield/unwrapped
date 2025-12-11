@@ -1,7 +1,8 @@
 import React from "react";
 import type { AllActivitiesStats } from "../../types";
 import { BigStatSlide } from "../shared/BigStatSlide";
-import { getActivityIcon } from "../../utils";
+import { getActivityIcon, formatDistance, getDistanceLabel } from "../../utils";
+import { useUnit } from "../../contexts/UnitContext";
 
 interface Props {
   activitiesStats: NonNullable<AllActivitiesStats>;
@@ -10,6 +11,9 @@ interface Props {
 export const ActivitiesSummarySlide: React.FC<Props> = ({
   activitiesStats,
 }) => {
+  const { unit } = useUnit();
+  const distanceLabel = getDistanceLabel(unit);
+
   return (
     <BigStatSlide title={`${activitiesStats!.year} in numbers`}>
       {/* Activities with icons */}
@@ -39,8 +43,10 @@ export const ActivitiesSummarySlide: React.FC<Props> = ({
               {getActivityIcon(a.type)}
             </span>
             <span>
-              <strong>{a.totalDistance.toFixed(1)} km</strong>{" "}
-              {a.type.toLowerCase()}
+              <strong>
+                {a.type.charAt(0).toUpperCase() + a.type.slice(1)}:
+              </strong>{" "}
+              {formatDistance(a.totalDistance, unit)} {distanceLabel}
             </span>
           </div>
         ))}
