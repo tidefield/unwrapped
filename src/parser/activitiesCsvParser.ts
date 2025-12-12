@@ -42,6 +42,15 @@ function parseActivitiesCSV(
   const lines = text.split("\n").filter((line) => line.trim());
   console.log("[Activities Parser] Total lines:", lines.length);
 
+  // Log the header row to understand column structure
+  if (lines.length > 0) {
+    const header = parseCSVLine(lines[0]);
+    console.log("[Activities Parser] Header columns:", header);
+    header.forEach((col, idx) => {
+      console.log(`[Activities Parser] Column ${idx}: "${col}"`);
+    });
+  }
+
   const activityMap = new Map<string, number>(); // key: `${month}|${activityType}`, value: distance
   let skippedLines = 0;
   let processedLines = 0;
@@ -75,7 +84,18 @@ function parseActivitiesCSV(
       continue;
     }
 
-    const distance = parseFloat(distanceStr);
+    // Check if distance is a number (for km/miles) or a duration (mm:ss)
+    let distance: number;
+    if (distanceStr.includes(":")) {
+      // This is a duration, skip it for now
+      console.log(
+        `[Activities Parser] Skipping line ${i}: duration format "${distanceStr}" instead of distance`,
+      );
+      skippedLines++;
+      continue;
+    }
+
+    distance = parseFloat(distanceStr);
     if (isNaN(distance) || distance <= 0) {
       console.log(
         `[Activities Parser] Skipping line ${i}: invalid distance "${distanceStr}"`,
@@ -151,14 +171,45 @@ function parseActivitiesCSV(
  * Parse date string to month-year format (e.g., "Jul 2021")
  */
 function parseDateToMonthYear(dateStr: string): string | null {
-  // Expected format: "Jul 9, 2021, 5:04:57 PM"
+  // Expected formats:
+  // - "Jul 9, 2021, 5:04:57 PM" (Strava/Garmin)
+  // - "2025-12-10" (Google Sheets ISO format)
 
   try {
+    // Handle ISO format first: "2025-12-10"
+    const isoMatch = dateStr.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (isoMatch) {
+      const [, year, monthNum, day] = isoMatch;
+      const monthIndex = parseInt(monthNum, 10) - 1;
+
+      // Convert month number to month name
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+
+      if (monthIndex >= 0 && monthIndex < 12) {
+        return `${monthNames[monthIndex]} ${year}`;
+      }
+    }
+
+    // Handle Strava/Garmin format: "Jul 9, 2021, 5:04:57 PM"
     // Extract month, day, and year manually
     // Pattern: "MMM DD, YYYY, time"
     const match = dateStr.match(/^(\w+)\s+(\d+),\s+(\d+)/);
 
     if (!match) {
+      console.log("[parseDateToMonthYear] No match for date:", dateStr);
       return null;
     }
 
@@ -182,12 +233,13 @@ function parseDateToMonthYear(dateStr: string): string | null {
 
     const monthIndex = monthNames[monthName];
     if (monthIndex === undefined) {
+      console.log("[parseDateToMonthYear] Unknown month:", monthName);
       return null;
     }
 
     return `${monthName} ${year}`;
   } catch (error) {
-    console.error("Error parsing date:", dateStr, error);
+    console.error("[parseDateToMonthYear] Error parsing date:", dateStr, error);
     return null;
   }
 }
