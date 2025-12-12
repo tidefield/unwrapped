@@ -310,7 +310,7 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
       )}
 
       {uploadedFiles.length > 0 && (
-        <button className="btn-primary" onClick={handleSubmit}>
+        <button className="btn-primary fs-unmask" onClick={handleSubmit}>
           Let's see what's inside!
         </button>
       )}
