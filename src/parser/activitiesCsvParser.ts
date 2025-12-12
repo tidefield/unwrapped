@@ -77,9 +77,9 @@ function parseActivitiesCSV(
       continue; // Skip malformed lines
     }
 
-    const activityDate = values[1]?.trim(); // Activity Date
-    const activityType = values[3]?.trim(); // Activity Type
-    const distanceStr = values[6]?.trim(); // Distance (column 7, 0-indexed as 6)
+    const activityDate = values[1]?.trim(); // Activity Date (column 2)
+    const activityType = values[3]?.trim(); // Activity Type (column 4)
+    const distanceStr = values[4]?.trim(); // Distance (column 5) - CORRECTED!
 
     console.log(
       `[Activities Parser] Line ${i} - Date: "${activityDate}", Type: "${activityType}", Distance: "${distanceStr}"`,
@@ -93,21 +93,12 @@ function parseActivitiesCSV(
       continue;
     }
 
-    // Check if distance is a number (for km/miles) or a duration (mm:ss)
-    let distance: number;
-    if (distanceStr.includes(":")) {
-      // This is a duration, skip it for now
-      console.log(
-        `[Activities Parser] Skipping line ${i}: duration format "${distanceStr}" instead of distance`,
-      );
-      skippedLines++;
-      continue;
-    }
-
-    distance = parseFloat(distanceStr);
+    // Handle European decimal format (comma instead of period)
+    const normalizedDistanceStr = distanceStr.replace(",", ".");
+    const distance = parseFloat(normalizedDistanceStr);
     if (isNaN(distance) || distance <= 0) {
       console.log(
-        `[Activities Parser] Skipping line ${i}: invalid distance "${distanceStr}"`,
+        `[Activities Parser] Skipping line ${i}: invalid distance "${distanceStr}" (normalized: "${normalizedDistanceStr}")`,
       );
       skippedLines++;
       continue;
