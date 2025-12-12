@@ -6,7 +6,8 @@ Welcome! I'm making this repo public to be 100% transparent that this app is cli
 
 This is in early development. The following data sources are supported:
 
-- **activities.csv** (recommended) - Complete export from Garmin Account Data Management
+- **activities.csv** from Strava Archive (recommended) - Download from Strava Account Settings
+- **activities.csv** from Garmin Account Data Management
 - **Total Distance.csv** from Garmin Connect
 - **Steps.csv** from Garmin Connect
 

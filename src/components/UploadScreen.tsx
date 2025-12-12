@@ -67,11 +67,24 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
 
       <div className="instructions">
         <p>
-          <strong>Export your Garmin data:</strong>
+          <strong>Export your fitness data:</strong>
         </p>
         <ol>
           <li>
-            <strong>Option 1:</strong> Complete export with all activities:{" "}
+            <strong>Strava (Recommended):</strong> Request your complete
+            archive:{" "}
+            <a
+              href="https://www.strava.com/athlete/delete_your_account"
+              target="_blank"
+              rel="noopener"
+              style={{ color: "#4d65ff", textDecoration: "underline" }}
+            >
+              Request Your Archive
+            </a>{" "}
+            → Click "Request Your Archive" and wait for email
+          </li>
+          <li>
+            <strong>Garmin:</strong> Complete export:{" "}
             <a
               href="https://www.garmin.com/en-US/account/datamanagement/exportdata"
               target="_blank"
@@ -83,26 +96,9 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
             (download activities.csv)
           </li>
           <li>
-            <strong>Option 2:</strong> Individual reports:{" "}
-            <a
-              href="https://connect.garmin.com/modern/report/17/all/last_year"
-              target="_blank"
-              rel="noopener"
-              style={{ color: "#4d65ff", textDecoration: "underline" }}
-            >
-              Activity Distance
-            </a>{" "}
-            +{" "}
-            <a
-              href="https://connect.garmin.com/modern/report/29/wellness/last_year"
-              target="_blank"
-              rel="noopener"
-              style={{ color: "#4d65ff", textDecoration: "underline" }}
-            >
-              Steps
-            </a>
+            Upload CSV files below (activities.csv or activities.csv from
+            Strava)
           </li>
-          <li>Upload CSV files below (activities.csv recommended)</li>
         </ol>
 
         <div style={{ marginTop: "1.5rem", marginBottom: "1rem" }}>
