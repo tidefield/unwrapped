@@ -57,11 +57,6 @@ function AppContent() {
   };
 
   const processSampleData = async () => {
-    // Track Wrapped creation
-    if (typeof window !== "undefined") {
-      (window as any).counter?.("wrapped-created");
-    }
-
     setCurrentScreen("loading");
     setLoadingText("Loading sample data...");
 
@@ -100,11 +95,6 @@ function AppContent() {
   };
 
   const handleFilesUploaded = async (files: File[], unit: "km" | "mile") => {
-    // Track Wrapped creation
-    if (typeof window !== "undefined") {
-      (window as any).counter?.("wrapped-created");
-    }
-
     setCurrentScreen("loading");
 
     // Set the unit in context
