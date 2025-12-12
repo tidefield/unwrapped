@@ -8,6 +8,9 @@ interface UploadScreenProps {
   onUseSampleData?: () => void;
 }
 
+const GOOGLE_SHEETS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/10WdTGpIWflQTDdN__cCTWrwCh2OrWq4ZCqXP6rhlszs/export?format=csv&gid=663162336";
+
 const UploadScreen: React.FC<UploadScreenProps> = ({
   onFilesUploaded,
   sampleFiles = [],
@@ -15,6 +18,10 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
 }) => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>(sampleFiles);
   const [selectedUnit, setSelectedUnit] = useState<Unit>("km");
+  const [loadingText, setLoadingText] = useState<string>("");
+  const [googleSheetsUrl, setGoogleSheetsUrl] = useState<string>(
+    "https://docs.google.com/spreadsheets/d/10WdTGpIWflQTDdN__cCTWrwCh2OrWq4ZCqXP6rhlszs/edit?gid=663162336#gid=663162336",
+  );
 
   useEffect(() => {
     setUploadedFiles(sampleFiles);
@@ -37,6 +44,28 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+  };
+
+  const handleFetchFromGoogleSheets = async () => {
+    try {
+      setLoadingText("Fetching data from Google Sheets...");
+
+      // Convert edit URL to export CSV URL
+      const csvUrl = googleSheetsUrl
+        .replace("/edit?gid=", "/export?format=csv&gid=")
+        .replace("/edit#gid=", "/export?format=csv&gid=");
+
+      const response = await fetch(csvUrl);
+      const csvText = await response.text();
+      const blob = new Blob([csvText], { type: "text/csv" });
+      const file = new File([blob], "activities.csv", { type: "text/csv" });
+      setUploadedFiles([file]);
+    } catch (error) {
+      console.error("Error fetching from Google Sheets:", error);
+      alert(
+        "Failed to fetch data from Google Sheets. Please check the URL and try again.",
+      );
+    }
   };
 
   const handleSubmit = () => {
@@ -81,7 +110,8 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
             >
               Request Your Archive
             </a>{" "}
-            → Click "Request Your Archive" and wait for email
+            → Click "Request Your Archive". Once you receive the archive, use
+            the activities.csv file.
           </li>
           <li>
             <strong>Garmin - Complete:</strong> Account Data Management:{" "}
@@ -166,6 +196,44 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
           💡 <strong>Coming soon:</strong> Bulk export from Strava & StrideSync,
           plus heart rate, sleep data, and sport-personalized cards!
         </p>
+
+        <div style={{ marginTop: "1.5rem" }}>
+          <p style={{ marginBottom: "0.5rem", fontSize: "0.9rem" }}>
+            <strong>Or fetch from Google Sheets:</strong>
+          </p>
+          <input
+            type="text"
+            value={googleSheetsUrl}
+            onChange={(e) => setGoogleSheetsUrl(e.target.value)}
+            placeholder="Paste Google Sheets URL here"
+            style={{
+              width: "100%",
+              maxWidth: "500px",
+              padding: "10px",
+              borderRadius: "8px",
+              border: "2px solid rgba(0, 0, 0, 0.3)",
+              fontSize: "14px",
+              marginBottom: "0.75rem",
+            }}
+          />
+          <button
+            onClick={handleFetchFromGoogleSheets}
+            style={{
+              padding: "10px 24px",
+              borderRadius: "8px",
+              border: "2px solid #4d65ff",
+              background: "#4d65ff",
+              color: "white",
+              cursor: "pointer",
+              fontWeight: 600,
+              fontSize: "16px",
+              width: "100%",
+              maxWidth: "500px",
+            }}
+          >
+            Fetch Data from Google Sheets
+          </button>
+        </div>
       </div>
 
       <div
