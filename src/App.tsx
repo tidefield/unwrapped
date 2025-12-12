@@ -101,39 +101,64 @@ function AppContent() {
     setUnit(unit);
 
     try {
+      console.log("[App] Processing files:", files.length);
       const allActivityData = [];
       const allStepsData = [];
 
       for (const file of files) {
+        console.log(
+          "[App] Processing file:",
+          file.name,
+          "Size:",
+          file.size,
+          "bytes",
+        );
         setLoadingText(`Parsing ${file.name}...`);
 
         if (file.name.toLowerCase().includes("steps")) {
+          console.log("[App] Parsing as Steps CSV");
           const data = await parseGarminStepsCSV(file, unit);
+          console.log("[App] Steps data parsed:", data.length, "records");
           allStepsData.push(...data);
         } else if (file.name.toLowerCase().includes("activities")) {
+          console.log("[App] Parsing as Activities CSV");
           const data = await parseGarminActivitiesCSV(file, unit);
+          console.log("[App] Activities data parsed:", data.length, "records");
           allActivityData.push(...data);
         } else {
+          console.log("[App] Parsing as Total Distance CSV");
           const data = await parseGarminTotalDistanceCSV(file, unit);
+          console.log("[App] Distance data parsed:", data.length, "records");
           allActivityData.push(...data);
         }
       }
 
+      console.log("[App] Total activity data:", allActivityData.length);
+      console.log("[App] Total steps data:", allStepsData.length);
+
       setLoadingText("Calculating your stats...");
 
       if (allActivityData.length > 0) {
+        console.log("[App] Calculating activities stats");
         setActivitiesStats(calculateAllActivitiesStats(allActivityData));
+      } else {
+        console.log("[App] No activity data to calculate stats");
       }
 
       if (allStepsData.length > 0) {
+        console.log("[App] Calculating steps stats");
         setStepsStats(calculateStepsStats(allStepsData));
+      } else {
+        console.log("[App] No steps data to calculate stats");
       }
 
+      console.log("[App] Switching to wrapped screen");
       setCurrentScreen("wrapped");
     } catch (error) {
-      console.error("Error processing files:", error);
+      console.error("[App] Error processing files:", error);
+      console.error("[App] Error stack:", error.stack);
       alert(
-        "Failed to process files. Please check your CSV files and try again.",
+        `Failed to process files: ${error.message}. Please check your CSV files and try again.`,
       );
       setCurrentScreen("upload");
     }

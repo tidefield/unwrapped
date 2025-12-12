@@ -48,6 +48,9 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
 
   const handleFetchFromGoogleSheets = async () => {
     try {
+      console.log("[Google Sheets] Starting fetch...");
+      console.log("[Google Sheets] Original URL:", googleSheetsUrl);
+
       setLoadingText("Fetching data from Google Sheets...");
 
       // Convert edit URL to export CSV URL
@@ -55,15 +58,41 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
         .replace("/edit?gid=", "/export?format=csv&gid=")
         .replace("/edit#gid=", "/export?format=csv&gid=");
 
+      console.log("[Google Sheets] Converted CSV URL:", csvUrl);
+
       const response = await fetch(csvUrl);
+      console.log("[Google Sheets] Response status:", response.status);
+      console.log("[Google Sheets] Response ok:", response.ok);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const csvText = await response.text();
+      console.log("[Google Sheets] CSV text length:", csvText.length);
+      console.log(
+        "[Google Sheets] First 200 chars:",
+        csvText.substring(0, 200),
+      );
+
       const blob = new Blob([csvText], { type: "text/csv" });
+      console.log("[Google Sheets] Blob size:", blob.size);
+
       const file = new File([blob], "activities.csv", { type: "text/csv" });
+      console.log(
+        "[Google Sheets] File created:",
+        file.name,
+        file.size,
+        "bytes",
+      );
+
       setUploadedFiles([file]);
+      console.log("[Google Sheets] Files set successfully");
     } catch (error) {
-      console.error("Error fetching from Google Sheets:", error);
+      console.error("[Google Sheets] Error details:", error);
+      console.error("[Google Sheets] Error message:", error.message);
       alert(
-        "Failed to fetch data from Google Sheets. Please check the URL and try again.",
+        `Failed to fetch data from Google Sheets: ${error.message}. Please check the URL and try again.`,
       );
     }
   };
