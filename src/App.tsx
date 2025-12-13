@@ -11,12 +11,14 @@ import UploadScreen from "./components/UploadScreen";
 import LoadingScreen from "./components/LoadingScreen";
 import WrappedScreen from "./components/WrappedScreen";
 import Footer from "./components/shared/Footer";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router";
 import { UnitProvider, useUnit } from "./contexts/UnitContext";
 
 type Screen = "upload" | "loading" | "wrapped";
 
 function AppContent() {
   const { setUnit } = useUnit();
+  const navigate = useNavigate();
   const [currentScreen, setCurrentScreen] = useState<Screen>("upload");
   const [activitiesStats, setActivitiesStats] =
     useState<AllActivitiesStats | null>(null);
@@ -203,12 +205,8 @@ function AppContent() {
       case "loading":
         return <LoadingScreen text={loadingText} />;
       case "wrapped":
-        return (
-          <WrappedScreen
-            activitiesStats={activitiesStats}
-            stepsStats={stepsStats}
-          />
-        );
+        navigate("/wrapped/0");
+        return null;
       default:
         return null;
     }
@@ -227,9 +225,14 @@ function AppContent() {
 
 function App() {
   return (
-    <UnitProvider>
-      <AppContent />
-    </UnitProvider>
+    <BrowserRouter>
+      <UnitProvider>
+        <Routes>
+          <Route path="/" element={<AppContent />} />
+          <Route path="/wrapped/:screenId" element={<WrappedScreen />} />
+        </Routes>
+      </UnitProvider>
+    </BrowserRouter>
   );
 }
 

@@ -12,18 +12,44 @@ import { BestWeekSlide } from "./steps/BestWeekSlide";
 import { StepsBestMonthSlide } from "./steps/StepsBestMonthSlide";
 import ConfettiBackground from "./shared/ConfettiBackground";
 import { useUnit } from "../contexts/UnitContext";
+import { useParams, useNavigate } from "react-router";
 
-interface WrappedScreenProps {
-  activitiesStats: AllActivitiesStats | null;
-  stepsStats: StepsStats | null;
-}
+interface WrappedScreenProps {}
 
-const WrappedScreen: React.FC<WrappedScreenProps> = ({
-  activitiesStats,
-  stepsStats,
-}) => {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+const WrappedScreen: React.FC<WrappedScreenProps> = ({}) => {
+  const navigate = useNavigate();
+  const { screenId } = useParams();
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(
+    Number(screenId || 0),
+  );
   const { unit } = useUnit();
+
+  const [activitiesStats, setActivitiesStats] =
+    useState<AllActivitiesStats | null>(null);
+  const [stepsStats, setStepsStats] = useState<StepsStats | null>(null);
+
+  useEffect(() => {
+    try {
+      const activitiesStats = JSON.parse(
+        localStorage.getItem("activitiesStats") || "null",
+      );
+      const stepsStats = JSON.parse(
+        localStorage.getItem("stepsStats") || "null",
+      );
+
+      if (!activitiesStats && !stepsStats) {
+        console.log("Re routing user to home page");
+        navigate("/");
+        return;
+      }
+      setActivitiesStats(activitiesStats);
+      setStepsStats(stepsStats);
+    } catch (error) {
+      console.error("Error loading stats from local storage:", error);
+      console.log("Re routing user to home page");
+      navigate("/");
+    }
+  }, []);
 
   // Calculate total number of slides
   const totalSlides = React.useMemo(() => {
@@ -39,9 +65,10 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
     return count;
   }, [activitiesStats, stepsStats]);
 
-  useEffect(() => {
-    setCurrentSlideIndex(0);
-  }, [activitiesStats, stepsStats]);
+  const navigateToScreen = (screenId: number) => {
+    navigate(`/wrapped/${screenId}`, { replace: true });
+    setCurrentSlideIndex(screenId);
+  };
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -58,7 +85,7 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
 
   const nextSlide = () => {
     if (currentSlideIndex < totalSlides - 1) {
-      setCurrentSlideIndex(currentSlideIndex + 1);
+      navigateToScreen(currentSlideIndex + 1);
     } else if (currentSlideIndex === totalSlides - 1) {
       clearDataAndRestart();
     }
@@ -74,7 +101,7 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
 
   const prevSlide = () => {
     if (currentSlideIndex > 0) {
-      setCurrentSlideIndex(currentSlideIndex - 1);
+      navigateToScreen(currentSlideIndex - 1);
     } else if (currentSlideIndex === 0) {
       clearDataAndRestart();
     }
@@ -173,7 +200,7 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({
           <span
             key={index}
             className={`dot ${index === currentSlideIndex ? "active" : ""}`}
-            onClick={() => setCurrentSlideIndex(index)}
+            onClick={() => navigateToScreen(index)}
           />
         ))}
       </div>
