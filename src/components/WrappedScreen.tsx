@@ -55,6 +55,7 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({}) => {
   const totalSlides = React.useMemo(() => {
     let count = 0;
     if (activitiesStats) {
+      console.log(activitiesStats);
       // Intro + Total Distance + Top Activity + Top 3 activities + Best Month + Streak + Outro
       count += 3 + Math.min(activitiesStats.activitiesByType.length, 3) + 3;
     }
@@ -156,9 +157,7 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({}) => {
     const CurrentSlideComponent = availableSlides[currentSlideIndex];
 
     if (!CurrentSlideComponent) {
-      return (
-        <div style={{ color: "white", padding: "2rem" }}>No slide found</div>
-      );
+      return <div className="text-white p-8">No slide found</div>;
     }
 
     // Pass props to components that need them
@@ -209,7 +208,7 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({}) => {
 
   if (totalSlides === 0) {
     return (
-      <div style={{ padding: "2rem" }}>
+      <div className="p-8">
         <h3>
           Uh oh. Either your data is broken or I can't handle your data yet.
         </h3>
@@ -226,26 +225,8 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({}) => {
         <div id="story-container">{renderCurrentSlide()}</div>
       </div>
 
-      <div
-        className="navigation"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "20px",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "20px",
-            right: "20px",
-            fontSize: "0.9rem",
-            color: "rgba(255, 255, 255, 0.6)",
-            fontWeight: 500,
-          }}
-        >
+      <div className="navigation flex justify-center items-center p-5 relative">
+        <div className="absolute top-5 right-5 text-sm text-white/60 font-medium">
           Showing distances in {unit === "mile" ? "miles" : "kilometers"}
         </div>
         <button className="nav-btn" onClick={prevSlide}>

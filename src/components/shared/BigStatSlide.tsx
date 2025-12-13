@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 interface SlideProps {
   title: string;
@@ -18,19 +18,7 @@ export const BigStatSlide: React.FC<SlideProps> = ({
   children,
 }) => {
   return (
-    <div
-      className="story-slide active"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-        width: "100%",
-        minWidth: "600px",
-        paddingTop: "0",
-      }}
-    >
+    <div className="story-slide active flex flex-col justify-center items-center h-full w-full min-w-[600px] pt-0">
       <div className="slide-header">🎁 Fitness (un)Wrapped</div>
       <div className="slide-title">{title}</div>
       {value && (
