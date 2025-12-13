@@ -17,6 +17,9 @@ export const getActivityIcon = (type: string) => {
     hike: "🏔️",
 
     workout: "🏋️‍♂️",
+    "gym & fitness equipment": "🏋️‍♂️",
+
+    "racket sports": "🎾",
 
     default: "🏃",
   };
