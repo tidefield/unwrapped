@@ -61,12 +61,12 @@ const WrappedScreen: React.FC<WrappedScreenProps> = ({}) => {
   const totalSlides = React.useMemo(() => {
     let count = 0;
     if (activitiesStats) {
-      // Intro + Total Distance + Top Activity + Top 3 activities + Best Month + Streak + Outro
-      count += 3 + Math.min(activitiesStats.activitiesByType.length, 3) + 3;
+      // Intro + Total Distance + Top Activity + Top 3 activities + Best Month + Outro
+      count += 3 + Math.min(activitiesStats.activitiesByType.length, 3) + 2;
     }
     if (stepsStats) {
-      // Intro + Total Steps + Average + Best Week + Best Month
-      count += 5;
+      // Total Steps + Average + Best Week + Best Month
+      count += 4;
     }
     return count;
   }, [activitiesStats, stepsStats]);
