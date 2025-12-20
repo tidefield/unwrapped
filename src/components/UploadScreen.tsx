@@ -122,6 +122,15 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
         onFilesUploaded(uploadedFiles, selectedUnit);
       }
     }
+
+    // Start audio playback
+    const audioElement = document.getElementById(
+      "bg-audio",
+    ) as HTMLAudioElement;
+    if (audioElement) {
+      audioElement.muted = false;
+      audioElement.play();
+    }
   };
 
   return (
