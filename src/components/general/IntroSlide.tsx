@@ -15,8 +15,7 @@ export const IntroSlide: React.FC<Props> = ({ activitiesStats }) => {
     <div className="flex flex-col justify-center items-center h-full w-full text-center animate-fade-in-up">
       <div className="text-3xl font-bold">Your 2025</div>
       <div className="text-4xl font-bold mt-5">Fitness (un)Wrapped</div>
-      <br />
-      <div className="text-2xl">{activityList}</div>
+      <div className="text-2xl mt-5">{activityList}</div>
     </div>
   );
 };
