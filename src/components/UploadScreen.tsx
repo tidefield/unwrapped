@@ -136,8 +136,8 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
   return (
     <div className="flex flex-col" style={{ maxWidth: "600px" }}>
       <ConfettiBackground />
-      <span className="text-4xl my-4 text-center">🎁 Fitness (un)Wrapped</span>
-      <span className="text-2xl my-4 text-center">
+      <span className="text-4xl my-2 text-center">🎁 Fitness (un)Wrapped</span>
+      <span className="text-xl my-2 text-center">
         Your year in fitness, free from paywalls
       </span>
 
@@ -147,8 +147,7 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
         </p>
         <ol>
           <li>
-            <strong>Strava (Recommended):</strong> Request your complete
-            archive:{" "}
+            <strong>Strava (Recommended):</strong>
             <a
               href="https://www.strava.com/athlete/delete_your_account"
               target="_blank"
@@ -162,6 +161,15 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
           </li>
           <li>
             <strong>Garmin:</strong>{" "}
+            <a
+              href="https://www.garmin.com/en-US/account/datamanagement/exportdata"
+              target="_blank"
+              rel="noopener"
+              style={{ color: "#4d65ff", textDecoration: "underline" }}
+            >
+              Data Export
+            </a>{" "}
+            <b> OR </b>
             <a
               href="https://connect.garmin.com/modern/report/17/all/last_year"
               target="_blank"
@@ -180,7 +188,10 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
               Steps.csv
             </a>
           </li>
-          <li>Upload CSV files below (activities.csv recommended)</li>
+          <li>
+            Upload the <i>csv</i> (activities.csv recommended) or <i>zip</i> (
+            Garmin ) files
+          </li>
         </ol>
 
         <div className="mt-2">
@@ -231,8 +242,8 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
         </div>
 
         <p className="note">
-          💡 <strong>Coming soon:</strong> Bulk export from Garmin, plus heart
-          rate, sleep data, and sport-personalized cards!
+          💡 <strong>Coming soon:</strong> Heart rate, sleep data, and
+          sport-personalized cards!
         </p>
       </div>
 
@@ -242,10 +253,7 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
         onDragOver={handleDragOver}
         onClick={() => document.getElementById("file-input")?.click()}
       >
-        <p className="drop-subtext">Drop your CSV files here</p>
-        <p className="drop-subtext">
-          or click "Let's see what's inside!" to explore with sample data
-        </p>
+        <p className="drop-subtext">Drop your files here</p>
         <input
           type="file"
           id="file-input"
@@ -258,7 +266,7 @@ const UploadScreen: React.FC<UploadScreenProps> = ({
       <div className="flex justify-center">
         {/*TODO: Hide this on loading sample data*/}
         <button className="btn-tertiary" onClick={loadSampleData}>
-          Try with sample data
+          Or try with sample data
         </button>
       </div>
 

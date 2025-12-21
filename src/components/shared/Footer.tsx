@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <div className="p-6">
+    <div className="p-1 text-sm">
       <span>
         💙 Love this?&nbsp;
         <a
@@ -13,10 +13,10 @@ const Footer: React.FC = () => {
         >
           Buy me a coffee
         </a>
-        &nbsp;&nbsp;☕
+        &nbsp;☕
       </span>
       <span>
-        &nbsp;&nbsp;or&nbsp;&nbsp;
+        &nbsp;or&nbsp;
         <a
           href="https://forms.gle/LQm8MAkahjd5zWvA6"
           target="_blank"
@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
         >
           send a feedback
         </a>
-        &nbsp;&nbsp;✉️
+        &nbsp;✉️
       </span>
     </div>
   );
