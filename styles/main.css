@@ -659,8 +659,7 @@ body {
     }
 
     #share-buttons-container {
-        width: 100vw;
-        bottom: -9.5vh;
+        width: 95vw;
     }
 }
 
